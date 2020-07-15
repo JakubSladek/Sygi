@@ -1,0 +1,7 @@
+{
+    "PREFIX": "!",
+    "TOKEN": "TOKEN",
+    "BOT_NAME": "Sygy",
+    "ADMIN_ROLE": "Admin",
+    "MSG_TIMEOUT": 30000
+}
