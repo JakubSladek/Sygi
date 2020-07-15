@@ -1,7 +1,9 @@
 {
     "PREFIX": "!",
-    "TOKEN": "TOKEN",
     "BOT_NAME": "Sygy",
     "ADMIN_ROLE": "Admin",
+    "DEFAULT_ROLE": "member",
+    "WELCOME_CHANNEL_ID": 12312312,
+    "WELCOME_MSG": null,
     "MSG_TIMEOUT": 30000
-}
+  }  
