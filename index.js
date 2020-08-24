@@ -5,7 +5,7 @@ require("dotenv").config();
 const fs = require("fs");
 const Discord = require("discord.js");
 const client = new Discord.Client();
-const db = require('quick.db');
+const db = require("quick.db");
 
 client.config = require("./config.json");
 client.dataPath = "./data/users/";
@@ -16,19 +16,19 @@ const init = async () => {
   //#region Commands
   client.commands = new Discord.Collection();
 
-  const commandFolders = ["", "moderation"];
-  commandFolders.forEach((folder) => {
-    if (folder.length > 0) folder += "/";
-    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter((file) => file.endsWith(".js"));
-    for (const file of commandFiles) {
-      const command = require(`./commands/${folder}${file}`);
-      client.commands.set(command.name, command);
-    }
-  });
+  fs.readdirSync("commands", { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => {
+      const folder = dirent.name;
+      const commandFiles = fs.readdirSync(`./commands/${folder}`).filter((file) => file.endsWith(".js"));
+      for (const file of commandFiles) {
+        const command = require(`./commands/${folder}/${file}`);
+        client.commands.set(command.name, command);
+      }
+    });
   //#endregion
 
   //#region Events
-  // Load events
   const eventFiles = fs.readdirSync(`./events/`).filter((file) => file.endsWith(".js"));
   for (const file of eventFiles) {
     const eventName = file.split(".")[0];
