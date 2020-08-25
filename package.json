@@ -13,6 +13,7 @@
     "dotenv": "^8.2.0",
     "moment": "^2.27.0",
     "moment-duration-format": "^2.3.2",
-    "quick.db": "^7.1.1"
+    "quick.db": "^7.1.1",
+    "quickdb": "^1.0.5"
   }
 }

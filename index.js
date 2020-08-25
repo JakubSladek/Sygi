@@ -39,10 +39,19 @@ const init = async () => {
     });
   //#endregion
 
-  //#region Admin check
-  client.isAdmin = (member) => {
-    
+  //#region Startup clean db
+  // TODO: Unmute every user
+  let guilds = await client.db.get(`guilds`);
+
+  if (guilds) {
+    Object.values(guilds).forEach((guild) => {
+      if (guild.mutedUsers) guild.mutedUsers = [];
+    });
+
+    client.db.set(`guilds`, guilds);
   }
+
+  //#endregion
 
   // Bot login
   client.login(process.env.TOKEN);

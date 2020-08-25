@@ -26,21 +26,12 @@ module.exports = {
       client.tempMsg.send(message, embedPreview);
 
       const collector = new Discord.MessageCollector(message.channel, (m) => m.author.id === message.author.id, { time: client.config.MSG_TIMEOUT });
-      collector.on("collect", (msg) => {
+      collector.on("collect", async (msg) => {
         m = msg.content.toLowerCase();
         if (m == "yes") {
-          member
-            .send(embedDM)
-            .then(() => {
-              member
-                .kick(reason)
-                .then(function () {
-                  msg.channel.send(`Successfully kicked ${member.user.tag}`);
-                  return client.storeUserData(member.id, ["kick"]);
-                })
-                .catch(console.error);
-            })
-            .catch(console.error);
+          await member.send(embedDM);
+          await member.kick(reason);
+          msg.channel.send(`Successfully kicked ${member.user.tag}`);
         } else if (m == "no") {
           return client.tempMsg.send(msg, "Kick cancelled.");
         }
