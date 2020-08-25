@@ -39,6 +39,11 @@ const init = async () => {
     });
   //#endregion
 
+  //#region Admin check
+  client.isAdmin = (member) => {
+    
+  }
+
   // Bot login
   client.login(process.env.TOKEN);
 };

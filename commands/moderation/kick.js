@@ -10,9 +10,7 @@ module.exports = {
       const member = await utils.getMember(message);
       let reason = args.slice(2).join(" ");
 
-      if (!reason) {
-        return client.tempMsg.send(message, `Please give a reason for kick.`);
-      }
+      if (!reason) return client.tempMsg.send(message, `Please give a reason for kick.`);
 
       const embedPreview = await getEmbed(client, member, reason);
 
@@ -27,11 +25,7 @@ module.exports = {
 
       client.tempMsg.send(message, embedPreview);
 
-      const collector = new Discord.MessageCollector(
-        message.channel,
-        (m) => m.author.id === message.author.id,
-        { time: client.config.MSG_TIMEOUT }
-      );
+      const collector = new Discord.MessageCollector(message.channel, (m) => m.author.id === message.author.id, { time: client.config.MSG_TIMEOUT });
       collector.on("collect", (msg) => {
         m = msg.content.toLowerCase();
         if (m == "yes") {
