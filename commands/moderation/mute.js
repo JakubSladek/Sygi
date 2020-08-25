@@ -31,7 +31,7 @@ module.exports = {
 
       let mutedUsers = await client.db.get(`guilds.guild_${message.guild.id}.mutedUsers`);
 
-      if (mutedUsers && mutedUsers.includes(member.user.id)) return client.tempMsg.send(message, `${member.user.tag} user is already muted!`);
+      if (mutedUsers && mutedUsers.includes(member.user.id)) return client.tempMsg.send(message, `${member.user.tag} is already muted!`);
 
       const embedPreview = await getEmbed(client, member, reason);
 
