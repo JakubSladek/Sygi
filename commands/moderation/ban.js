@@ -40,16 +40,11 @@ module.exports = {
       collector.on("collect", (msg) => {
         m = msg.content.toLowerCase();
         if (m == "yes") {
-          member.send(embedDM);
-          msg.author
-            .send(embedDM)
-            .then(function () {
-              member.ban(reason).then(function () {
-                msg.channel.send(`Successfully banned ${member.user.tag}`);
-                return client.storeUserData(member.id, ["ban"]);
-              });
-            })
-            .catch(console.error);
+          await member.send(embedDM);
+          await msg.author.send(embedDM);
+          await member.ban(reason);
+          await client.db.add(`guilds.guild_${message.guild.id}.users.${member.user.id}.bans`, 1);
+          return msg.channel.send(`Successfully banned ${member.user.tag}`);
         } else if (m == "no") {
           return client.tempMsg.send(msg, "Ban cancelled.");
         }

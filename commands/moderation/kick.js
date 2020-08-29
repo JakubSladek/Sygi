@@ -31,7 +31,8 @@ module.exports = {
         if (m == "yes") {
           await member.send(embedDM);
           await member.kick(reason);
-          msg.channel.send(`Successfully kicked ${member.user.tag}`);
+          await client.db.add(`guilds.guild_${message.guild.id}.users.${member.user.id}.kicks`, 1);
+          return msg.channel.send(`Successfully kicked ${member.user.tag}`);
         } else if (m == "no") {
           return client.tempMsg.send(msg, "Kick cancelled.");
         }
