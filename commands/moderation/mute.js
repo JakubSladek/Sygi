@@ -65,7 +65,7 @@ module.exports = {
       await client.tempMsg.send(message, embedPreview);
 
       const collector = new Discord.MessageCollector(message.channel, (m) => m.author.id === message.author.id, { time: client.config.MSG_TIMEOUT });
-      collector.on("collect", async (msg) => {
+      collector.on("collect", (msg) => {
         m = msg.content.toLowerCase();
         if (m == "yes" || m == "no") collector.stop();
         if (m == "yes") {
@@ -77,14 +77,14 @@ module.exports = {
             client.db.set(`guilds.guild_${message.guild.id}.mutedUsers`, mutedUsers);
           }
 
-          await member.roles.remove(mainRole.id);
-          await member.send(embedDM);
-          await member.roles.add(muteRole);
-          await msg.channel.send(successAnswer);
-          await client.db.push(`guilds.guild_${message.guild.id}.mutedUsers`, member.user.id);
-          await client.db.add(`guilds.guild_${message.guild.id}.users.${member.user.id}.muted`, 1);
+          member.roles.remove(mainRole.id);
+          member.send(embedDM);
+          member.roles.add(muteRole);
+          msg.channel.send(successAnswer);
+          client.db.push(`guilds.guild_${message.guild.id}.mutedUsers`, member.user.id);
+          client.db.add(`guilds.guild_${message.guild.id}.users.${member.user.id}.muted`, 1);
 
-          setTimeout(() => {
+          return setTimeout(() => {
             if (mutedUsers && mutedUsers.includes(member.user.id)) {
               let index = mutedUsers.indexOf(member.user.id);
               mutedUsers.splice(index, 1);

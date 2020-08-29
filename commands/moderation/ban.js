@@ -42,7 +42,6 @@ module.exports = {
         if (m == "yes" || m == "no") collector.stop();
         if (m == "yes") {
           await member.send(embedDM);
-          await msg.author.send(embedDM);
           member.ban(reason);
           client.db.add(`guilds.guild_${message.guild.id}.users.${member.user.id}.bans`, 1);
           msg.channel.send(`Successfully banned ${member.user.tag}`);
