@@ -8,19 +8,19 @@ module.exports = async (client, message) => {
   if (!message.content.startsWith(message.prefix)) return;
 
   const args = message.content.substring(message.prefix.length).split(" ");
-  const command = args[0];
+  const command = client.commands.get(args[0]);
+  if (!command) return message.delete();
 
   let modUsers = await client.db.get(`guilds.guild_${message.guild.id}.users.mods`);
   let modRoles = await client.db.get(`guilds.guild_${message.guild.id}.roles.mods`);
 
-  let ownerID = message.guild.member(guild.owner).user.id;
-  let author = message.author;
+  let ownerID = message.guild.member(message.guild.owner).user.id;
+  let author = message.guild.member(message.author);
   let authorID = author.id;
 
-  const roleFound = modRoles.some((r) => author.roles.cache.includes(r));
-
+  const roleFound = modRoles ? modRoles.some((r) => author._roles.includes(r)) : null;
   const authorIsOwner = authorID == ownerID;
-  const authorIsMod = modUsers.includes(authorID) || roleFound;
+  const authorIsMod = modUsers ? modUsers.includes(authorID) || roleFound : roleFound;
 
   let access = false;
 
@@ -31,8 +31,6 @@ module.exports = async (client, message) => {
 
   if (!access) return tempMsg.send(message, "Missing permissions for this command!");
 
-  if (!client.commands.get(command)) return message.delete();
-
-  client.commands.get(command).execute(client, message, args);
+  command.execute(client, message, args);
   client.tempMsg.delete(message);
 };

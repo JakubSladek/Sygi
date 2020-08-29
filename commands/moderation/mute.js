@@ -23,6 +23,7 @@ module.exports = {
         )
         .setColor("#0f0f0f");
 
+      if (args.length < 4 || !message.mentions.members.first()) return client.tempMsg.send(message, embedHelp);
       let memberid = args[1].replace(/[^0-9]/g, "");
       let member = memberid == message.mentions.members.first().user.id ? message.mentions.members.first() : null;
       let timeout = args.slice(2).join(" ").split(" ")[0];

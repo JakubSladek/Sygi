@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const utils = require(`./utils/getMember.js`);
 const { getEmbed } = require(`./utils/getEmbed.js`);
 
 module.exports = {
@@ -9,32 +8,29 @@ module.exports = {
   async execute(client, message, args) {
     try {
       const embedHelp = new Discord.MessageEmbed()
-      .setAuthor(`Command: ${message.prefix}ban`)
-      .setDescription(
-        `
-        **Description:** Kick a member from guild.
-        **Usage:** ${message.prefix}kick [user] [limit] [reason]
+        .setAuthor(`Command: ${message.prefix}ban`)
+        .setDescription(
+          `
+        **Description:** Ban a member from guild.
+        **Usage:** ${message.prefix}ban [user] [reason]
         **Example:**
-        -kick @NoobLance Shitposting
-        -kick @User spamming
-        -kick @NoobLance Too Cool
-        -kick @NoobLance He asked for it
-      `
-      )
-      .setColor("#0f0f0f");
+        -ban @NoobLance Shitposting
+        -ban @User spamming
+        -ban @NoobLance Too Cool
+        -ban @NoobLance He asked for it
+          `
+        )
+        .setColor("#0f0f0f");
 
-      const member = await utils.getMember(message);
-
-      if (!member.bannable)
-        return client.tempMsg.send(
-          message,
-          "I cannot ban this user! Do they have a higher role? Do I have ban permissions?"
-        );
-
+      if (args.length < 3 || !message.mentions.members.first()) return client.tempMsg.send(message, embedHelp);
+      let memberid = args[1].replace(/[^0-9]/g, "");
+      let member = memberid == message.mentions.members.first().user.id ? message.mentions.members.first() : null;
       let reason = args.slice(2).join(" ");
 
-      if (!reason) return client.tempMsg.send(message, embedHelp);
-      
+      if (!reason || !member) return client.tempMsg.send(message, embedHelp);
+
+      if (!member.bannable) return client.tempMsg.send(message, "I cannot ban this user! Do they have a higher role? Do I have ban permissions?");
+
       const embedPreview = await getEmbed(client, member, reason);
 
       const embedDM = new Discord.MessageEmbed()
@@ -49,7 +45,7 @@ module.exports = {
 
       const collector = new Discord.MessageCollector(message.channel, (m) => m.author.id === message.author.id, { time: client.config.MSG_TIMEOUT });
 
-      collector.on("collect", (msg) => {
+      collector.on("collect", async (msg) => {
         m = msg.content.toLowerCase();
         if (m == "yes" || m == "no") collector.stop();
         if (m == "yes") {

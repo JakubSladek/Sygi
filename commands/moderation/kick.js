@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const utils = require(`./utils/getMember.js`);
 const { getEmbed } = require(`./utils/getEmbed.js`);
 
 module.exports = {
@@ -23,12 +22,12 @@ module.exports = {
         )
         .setColor("#0f0f0f");
 
-      const member = await utils.getMember(message);
+      if (args.length < 3 || !message.mentions.members.first()) return client.tempMsg.send(message, embedHelp);
+      let memberid = args[1].replace(/[^0-9]/g, "");
+      let member = memberid == message.mentions.members.first().user.id ? message.mentions.members.first() : null;
       let reason = args.slice(2).join(" ");
 
-      if (!reason) return client.tempMsg.send(message, embedHelp);
-
-      const embedPreview = await getEmbed(client, member, reason);
+      if (!reason || !member) return client.tempMsg.send(message, embedHelp);
 
       const embedDM = new Discord.MessageEmbed()
         .setAuthor(message.guild.name)
@@ -36,6 +35,8 @@ module.exports = {
         .setDescription(`You were kicked from the server.\n\n**Reason:** ${reason}`)
         .setColor("#FF0000")
         .setFooter(`\nIf you do not get why you were kicked, please DM ${message.author.tag}`);
+
+      const embedPreview = await getEmbed(client, member, reason);
 
       client.tempMsg.send(message, `Are you sure you want to issue this kick? (__y__es | __n__o)`);
       client.tempMsg.send(message, embedPreview);
