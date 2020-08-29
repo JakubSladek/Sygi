@@ -67,6 +67,7 @@ module.exports = {
       const collector = new Discord.MessageCollector(message.channel, (m) => m.author.id === message.author.id, { time: client.config.MSG_TIMEOUT });
       collector.on("collect", async (msg) => {
         m = msg.content.toLowerCase();
+        if (m == "yes" || m == "no") collector.stop();
         if (m == "yes") {
           let successAnswer = `Successfully muted ${member.user.tag} for ${timeout}.`;
 
@@ -83,20 +84,17 @@ module.exports = {
           await client.db.push(`guilds.guild_${message.guild.id}.mutedUsers`, member.user.id);
           await client.db.add(`guilds.guild_${message.guild.id}.users.${member.user.id}.muted`, 1);
 
-          return setTimeout(function () {
+          setTimeout(() => {
             if (mutedUsers && mutedUsers.includes(member.user.id)) {
               let index = mutedUsers.indexOf(member.user.id);
               mutedUsers.splice(index, 1);
               client.db.set(`guilds.guild_${message.guild.id}.mutedUsers`, mutedUsers);
             }
 
-            if (!member.roles.cache.find((role) => role.name === "member")) member.roles.add(mainRole).catch(console.error);
-
-            if (member.roles.cache.find((role) => role.name === "mute")) {
-              member.roles.remove(muteRole.id).catch(console.error);
-            }
-            return;
+            if (!member.roles.cache.find((role) => role.name === "member")) member.roles.add(mainRole);
+            if (member.roles.cache.find((role) => role.name === "mute")) member.roles.remove(muteRole.id);
           }, msTime);
+
         } else if (m == "no") {
           return client.tempMsg.send(msg, "Mute cancelled.");
         }

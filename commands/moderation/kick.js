@@ -28,13 +28,14 @@ module.exports = {
       const collector = new Discord.MessageCollector(message.channel, (m) => m.author.id === message.author.id, { time: client.config.MSG_TIMEOUT });
       collector.on("collect", async (msg) => {
         m = msg.content.toLowerCase();
+        if (m == "yes" || m == "no") collector.stop();
         if (m == "yes") {
           await member.send(embedDM);
-          await member.kick(reason);
-          await client.db.add(`guilds.guild_${message.guild.id}.users.${member.user.id}.kicks`, 1);
-          return msg.channel.send(`Successfully kicked ${member.user.tag}`);
+          member.kick(reason);
+          client.db.add(`guilds.guild_${message.guild.id}.users.${member.user.id}.kicks`, 1);
+          msg.channel.send(`Successfully kicked ${member.user.tag}`);
         } else if (m == "no") {
-          return client.tempMsg.send(msg, "Kick cancelled.");
+          client.tempMsg.send(msg, "Kick cancelled.");
         }
       });
     } catch (e) {
