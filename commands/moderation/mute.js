@@ -4,15 +4,16 @@ const { getEmbed } = require(`./utils/getEmbed.js`);
 
 module.exports = {
   name: "mute",
+  permission: "Moderator",
   description: "mute command",
   async execute(client, message, args) {
     try {
       const embedHelp = new Discord.MessageEmbed()
-        .setAuthor(`Command: ${client.db.get(`guilds.guild_${message.guild.id}.prefix`) || client.config.PREFIX}mute`)
+        .setAuthor(`Command: ${message.prefix}mute`)
         .setDescription(
           `
           **Description:** Mute a member so they cannot type or speak, time limit in minutes.
-          **Usage:** -mute [user] [limit] [reason]
+          **Usage:** ${message.prefix}mute [user] [limit] [reason]
           **Example:**
           -mute @NoobLance 10 Shitposting
           -mute @User 10m spamming
@@ -65,6 +66,7 @@ module.exports = {
       await client.tempMsg.send(message, embedPreview);
 
       const collector = new Discord.MessageCollector(message.channel, (m) => m.author.id === message.author.id, { time: client.config.MSG_TIMEOUT });
+      
       collector.on("collect", (msg) => {
         m = msg.content.toLowerCase();
         if (m == "yes" || m == "no") collector.stop();
@@ -94,7 +96,6 @@ module.exports = {
             if (!member.roles.cache.find((role) => role.name === "member")) member.roles.add(mainRole);
             if (member.roles.cache.find((role) => role.name === "mute")) member.roles.remove(muteRole.id);
           }, msTime);
-
         } else if (m == "no") {
           return client.tempMsg.send(msg, "Mute cancelled.");
         }
