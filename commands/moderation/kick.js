@@ -4,7 +4,7 @@ const { getEmbed } = require(`./utils/getEmbed.js`);
 
 module.exports = {
   name: "kick",
-  permission: "Admin",
+  permission: "mod",
   description: "kick command",
   async execute(client, message, args) {
     try {

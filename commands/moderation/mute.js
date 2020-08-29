@@ -4,7 +4,7 @@ const { getEmbed } = require(`./utils/getEmbed.js`);
 
 module.exports = {
   name: "mute",
-  permission: "Moderator",
+  permission: "mod",
   description: "mute command",
   async execute(client, message, args) {
     try {
@@ -66,7 +66,7 @@ module.exports = {
       await client.tempMsg.send(message, embedPreview);
 
       const collector = new Discord.MessageCollector(message.channel, (m) => m.author.id === message.author.id, { time: client.config.MSG_TIMEOUT });
-      
+
       collector.on("collect", (msg) => {
         m = msg.content.toLowerCase();
         if (m == "yes" || m == "no") collector.stop();

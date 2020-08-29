@@ -4,7 +4,7 @@ const { getEmbed } = require(`./utils/getEmbed.js`);
 
 module.exports = {
   name: "ban",
-  permission: "Admin",
+  permission: "mod",
   description: "ban command",
   async execute(client, message, args) {
     try {
