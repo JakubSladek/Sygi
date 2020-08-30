@@ -14,11 +14,12 @@ module.exports = {
           `
         **Description:** ${this.name} a member in guild.
         **Usage:** ${message.prefix}${this.name} [user] [limit] [reason]
+        **Minimal limit:** 1m
         **Example:**
-        ${message.prefix}${this.name} @NoobLance Shitposting
-        ${message.prefix}${this.name} @User spamming
-        ${message.prefix}${this.name} @NoobLance Too Cool
-        ${message.prefix}${this.name} @NoobLance He asked for it
+        ${message.prefix}${this.name} @NoobLance 1m Shitposting
+        ${message.prefix}${this.name} @User 1h spamming
+        ${message.prefix}${this.name} @NoobLance 2h Too Cool
+        ${message.prefix}${this.name} @NoobLance 30d He asked for it
       `
         )
         .setColor("#0f0f0f");
