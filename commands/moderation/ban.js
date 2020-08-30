@@ -8,17 +8,17 @@ module.exports = {
   async execute(client, message, args) {
     try {
       const embedHelp = new Discord.MessageEmbed()
-        .setAuthor(`Command: ${message.prefix}ban`)
+        .setAuthor(`Command: ${message.prefix}${this.name}`)
         .setDescription(
           `
-        **Description:** Ban a member from guild.
-        **Usage:** ${message.prefix}ban [user] [reason]
+        **Description:** ${this.name} a member from guild.
+        **Usage:** ${message.prefix}${this.name} [user] [reason]
         **Example:**
-        -ban @NoobLance Shitposting
-        -ban @User spamming
-        -ban @NoobLance Too Cool
-        -ban @NoobLance He asked for it
-          `
+        ${message.prefix}${this.name} @NoobLance Shitposting
+        ${message.prefix}${this.name} @User spamming
+        ${message.prefix}${this.name} @NoobLance Too Cool
+        ${message.prefix}${this.name} @NoobLance He asked for it
+      `
         )
         .setColor("#0f0f0f");
 

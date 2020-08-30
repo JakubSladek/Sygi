@@ -9,17 +9,17 @@ module.exports = {
   async execute(client, message, args) {
     try {
       const embedHelp = new Discord.MessageEmbed()
-        .setAuthor(`Command: ${message.prefix}mute`)
+        .setAuthor(`Command: ${message.prefix}${this.name}`)
         .setDescription(
           `
-          **Description:** Mute a member so they cannot type or speak, time limit in minutes.
-          **Usage:** ${message.prefix}mute [user] [limit] [reason]
-          **Example:**
-          -mute @NoobLance 10 Shitposting
-          -mute @User 10m spamming
-          -mute @NoobLance 1d Too Cool
-          -mute @NoobLance 5h He asked for it
-        `
+        **Description:** ${this.name} a member in guild.
+        **Usage:** ${message.prefix}${this.name} [user] [limit] [reason]
+        **Example:**
+        ${message.prefix}${this.name} @NoobLance Shitposting
+        ${message.prefix}${this.name} @User spamming
+        ${message.prefix}${this.name} @NoobLance Too Cool
+        ${message.prefix}${this.name} @NoobLance He asked for it
+      `
         )
         .setColor("#0f0f0f");
 
